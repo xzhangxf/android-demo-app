@@ -3,13 +3,7 @@ import { danger, warn, message } from "danger";
 // Welcome message
 message("👋 Thanks for your pull request!");
 
-// Check for changelog
-const hasChangelog = danger.git.modified_files.some(f => f.includes('CHANGELOG'));
-const isTrivial = title.toLowerCase().includes('chore') || title.toLowerCase().includes('docs');
 
-if (additions + deletions > 10 && !hasChangelog && !isTrivial) {
-  message("📝 Consider updating CHANGELOG.md");
-}
 
 // Get PR details
 const title = danger.github.pr.title;
@@ -17,6 +11,14 @@ const body = danger.github.pr.body || "";
 const additions = danger.github.pr.additions;
 const deletions = danger.github.pr.deletions;
 const changedFiles = danger.git.modified_files.length + danger.git.created_files.length;
+
+// Check for changelog
+const hasChangelog = danger.git.modified_files.some(f => f.includes('CHANGELOG'));
+const isTrivial = title.toLowerCase().includes('chore') || title.toLowerCase().includes('docs');
+
+if (additions + deletions > 10 && !hasChangelog && !isTrivial) {
+  message("📝 Consider updating CHANGELOG.md");
+}
 
 // Rule 1: Check title format
 if (!title.includes("feat:") && !title.includes("fix:") && !title.includes("test:") && 
